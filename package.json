@@ -1,0 +1,22 @@
+{
+  "name": "ziggle-crawl",
+  "version": "1.0.0",
+  "description": "ziggle academic crawl code",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "start:prod": "node ./dist/main.js",
+    "start:dev": "ts-node ./src/main.ts"
+  },
+  "author": "siwonpada",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "typescript": "^5.4.3"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2"
+  }
+}
