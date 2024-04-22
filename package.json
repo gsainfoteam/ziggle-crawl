@@ -14,6 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^1.6.8",
+    "cheerio": "^1.0.0-rc.12",
+    "rxjs": "^7.8.1",
     "typescript": "^5.4.3"
   },
   "devDependencies": {

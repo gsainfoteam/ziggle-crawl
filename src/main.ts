@@ -1,5 +1,7 @@
-import axios from "axios";
+import { getAcademicNoticeList } from "./functions";
 
-function main() {}
+async function main() {
+  const list = await getAcademicNoticeList();
+}
 
 main();
