@@ -1,13 +1,41 @@
-import { firstValueFrom, from, map, toArray } from "rxjs";
-import { getAcademicNoticeList } from "./crawls.function";
-import { getRecentCrwalNotice, postCrwalNotice } from "./http.funtion";
+import {
+  concatMap,
+  firstValueFrom,
+  identity,
+  map,
+  take,
+  timeout,
+  toArray,
+} from "rxjs";
+import { getAcademicNotice, getAcademicNoticeList } from "./crawls.function";
+import {
+  getCrwalNotice,
+  postCrwalNotice,
+  updateCrwalNotice,
+} from "./http.funtion";
 
 async function main() {
   const list = await firstValueFrom(
-    from(getAcademicNoticeList()).pipe(toArray())
+    getAcademicNoticeList().pipe(
+      take(100),
+      timeout(60e3),
+      concatMap((meta) =>
+        getAcademicNotice(meta.link).pipe(map((notice) => ({ notice, meta })))
+      ),
+      map(async (notice) => {
+        const prev = await getCrwalNotice(notice.meta.link);
+        return { prev, notice };
+      }),
+      concatMap(identity),
+      toArray()
+    )
   );
-  const recentNotice = await getRecentCrwalNotice();
-  console.log(recentNotice);
+  const updateNotice = list.filter(({ prev }) => {
+    prev !== undefined;
+  });
+  const newNotice = list.filter(({ prev }) => {
+    prev === undefined;
+  });
 }
 
 main();

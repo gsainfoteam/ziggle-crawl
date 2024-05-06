@@ -1,10 +1,7 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { PostCrwalNotice } from "./types/PostCrawl.type";
 import dotenv from "dotenv";
-import {
-  GeneralNoticeDto,
-  GetNoticeReturn,
-} from "./types/GetNoticeReturn.type";
+import { Crawl } from "./types/Crawl.typ";
 dotenv.config();
 
 const apiUrl = process.env.API_URL || "http://localhost:3000";
@@ -26,8 +23,8 @@ export async function postCrwalNotice({
       authorName,
       password: apiPassword,
     })
-    .catch((error) => {
-      console.error(error);
+    .catch((error: AxiosError) => {
+      console.error(error.response?.data);
       throw new Error("Failed to post notice");
     })
     .then(() => {
@@ -36,20 +33,45 @@ export async function postCrwalNotice({
     });
 }
 
-export async function getRecentCrwalNotice(): Promise<GeneralNoticeDto> {
+export async function updateCrwalNotice({
+  title,
+  body,
+  type,
+  url,
+  authorName,
+}: Omit<PostCrwalNotice, "password">): Promise<void> {
   return axios
-    .get<GetNoticeReturn>(`${apiUrl}/notice`, {
+    .patch<void>(`${apiUrl}/crawl`, {
+      title,
+      body,
+      type,
+      url,
+      authorName,
+      password: apiPassword,
+    })
+    .catch((error) => {
+      console.error(error);
+      throw new Error("Failed to post notice");
+    })
+    .then(() => {
+      console.log(`Updated notice: ${title}`);
+      return;
+    });
+}
+
+export async function getCrwalNotice(url: string): Promise<Crawl | undefined> {
+  return axios
+    .get<Crawl>(`${apiUrl}/crawl`, {
       params: {
-        offset: 0,
-        limit: 1,
-        category: "ACADEMIC",
+        url,
+        password: apiPassword,
       },
     })
     .catch((error) => {
       console.error(error);
-      throw new Error("Failed to get recent notice");
+      return null;
     })
     .then((response) => {
-      return response.data.list[0];
+      return response?.data;
     });
 }

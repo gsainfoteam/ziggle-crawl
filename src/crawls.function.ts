@@ -33,9 +33,7 @@ export function getAcademicNoticeList(): Observable<CrawledNotice> {
     map((meta) => ({
       id: Number.parseInt(meta.link.split("no=")[1].split("&")[0]),
       ...meta,
-    })),
-    toArray(),
-    concatMap((metas): CrawledNotice[] => metas.sort((a, b) => b.id - a.id))
+    }))
   );
 }
 
