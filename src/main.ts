@@ -31,11 +31,14 @@ async function main() {
     )
   );
   const updateNotice = list.filter(({ prev }) => {
-    prev !== undefined;
+    return prev !== undefined;
   });
   const newNotice = list.filter(({ prev }) => {
-    prev === undefined;
+    return prev === undefined;
   });
+  console.log("list", list);
+  console.log("updateNotice", updateNotice);
+  console.log("newNotice", newNotice);
 }
 
 main();

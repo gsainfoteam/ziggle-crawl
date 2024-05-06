@@ -67,9 +67,11 @@ export async function getCrwalNotice(url: string): Promise<Crawl | undefined> {
         password: apiPassword,
       },
     })
-    .catch((error) => {
+    .catch((error: AxiosError) => {
+      if (error.response?.status === 404) {
+        return undefined;
+      }
       console.error(error);
-      return null;
     })
     .then((response) => {
       return response?.data;
