@@ -1,17 +1,13 @@
-import { firstValueFrom, map, toArray } from "rxjs";
+import { firstValueFrom, from, map, toArray } from "rxjs";
 import { getAcademicNoticeList } from "./crawls.function";
+import { getRecentCrwalNotice, postCrwalNotice } from "./http.funtion";
 
 async function main() {
-  console.log("String the crawling");
   const list = await firstValueFrom(
-    getAcademicNoticeList().pipe(
-      toArray(),
-      map((notices) => {
-        console.log(notices);
-        return notices;
-      })
-    )
+    from(getAcademicNoticeList()).pipe(toArray())
   );
+  const recentNotice = await getRecentCrwalNotice();
+  console.log(recentNotice);
 }
 
 main();
