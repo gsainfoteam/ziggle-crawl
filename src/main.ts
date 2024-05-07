@@ -36,9 +36,28 @@ async function main() {
   const newNotice = list.filter(({ prev }) => {
     return prev === undefined;
   });
-  console.log("list", list);
-  console.log("updateNotice", updateNotice);
-  console.log("newNotice", newNotice);
+  await Promise.all(
+    newNotice.map(async ({ notice }) => {
+      await postCrwalNotice({
+        title: notice.meta.title,
+        body: notice.notice.content ?? "",
+        type: "ACADEMIC",
+        authorName: notice.meta.author,
+        url: notice.meta.link,
+      });
+    })
+  );
+  await Promise.all(
+    updateNotice.map(async ({ notice }) => {
+      await updateCrwalNotice({
+        title: notice.meta.title,
+        body: notice.notice.content ?? "",
+        type: "ACADEMIC",
+        authorName: notice.meta.author,
+        url: notice.meta.link,
+      });
+    })
+  );
 }
 
 main();
