@@ -4,8 +4,8 @@ import dotenv from "dotenv";
 import { Crawl } from "./types/Crawl.typ";
 dotenv.config();
 
-const apiUrl = process.env.API_URL || "http://localhost:3000";
-const apiPassword = process.env.CRAWL_PASSWORD || "password";
+const apiUrl = process.env.API_URL;
+const apiPassword = process.env.CRAWL_PASSWORD;
 
 export async function postCrwalNotice({
   title,

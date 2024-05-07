@@ -15,6 +15,14 @@ import {
 } from "./http.funtion";
 
 async function main() {
+  if (process.env.API_URL === undefined) {
+    console.error("API_URL is not defined");
+    return;
+  }
+  if (process.env.CRAWL_PASSWORD === undefined) {
+    console.error("CRAWL_PASSWORD is not defined");
+    return;
+  }
   console.log("Crawling academic notices");
   const list = await firstValueFrom(
     getAcademicNoticeList().pipe(
@@ -68,6 +76,8 @@ async function main() {
       });
     })
   );
+
+  console.log("Finished");
 }
 
 main();
