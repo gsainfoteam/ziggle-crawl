@@ -14,6 +14,7 @@ export async function postCrwalNotice({
   url,
   authorName,
 }: Omit<PostCrwalNotice, "password">): Promise<void> {
+  console.log(`Posting notice: ${title}`);
   return axios
     .post<void>(`${apiUrl}/crawl`, {
       title,
@@ -40,6 +41,7 @@ export async function updateCrwalNotice({
   url,
   authorName,
 }: Omit<PostCrwalNotice, "password">): Promise<void> {
+  console.log(`Updating notice: ${title}`);
   return axios
     .patch<void>(`${apiUrl}/crawl`, {
       title,

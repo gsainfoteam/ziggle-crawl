@@ -15,6 +15,7 @@ import {
 } from "./http.funtion";
 
 async function main() {
+  console.log("Crawling academic notices");
   const list = await firstValueFrom(
     getAcademicNoticeList().pipe(
       take(100),
@@ -30,12 +31,15 @@ async function main() {
       toArray()
     )
   );
+  console.log("Crawled academic notices");
   const updateNotice = list.filter(({ prev }) => {
     return prev !== undefined;
   });
   const newNotice = list.filter(({ prev }) => {
     return prev === undefined;
   });
+  console.log("new notices", newNotice.length);
+  console.log("updated notices", updateNotice.length);
   await Promise.all(
     newNotice.map(async ({ notice }) => {
       await postCrwalNotice({
@@ -48,7 +52,13 @@ async function main() {
     })
   );
   await Promise.all(
-    updateNotice.map(async ({ notice }) => {
+    updateNotice.map(async ({ notice, prev }) => {
+      if (notice.notice.content === undefined) {
+        return;
+      }
+      if (prev?.title === notice.meta.title) {
+        return;
+      }
       await updateCrwalNotice({
         title: notice.meta.title,
         body: notice.notice.content ?? "",
