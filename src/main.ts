@@ -46,8 +46,8 @@ async function main() {
   const newNotice = list.filter(({ prev }) => {
     return prev === undefined;
   });
-  console.log("new notices", newNotice.length);
-  console.log("updated notices", updateNotice.length);
+  console.log("new notices:", newNotice.length);
+  console.log("existing notices:", updateNotice.length);
   await Promise.all(
     newNotice.map(async ({ notice }) => {
       await postCrwalNotice({
