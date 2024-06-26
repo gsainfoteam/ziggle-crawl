@@ -7,7 +7,7 @@ dotenv.config();
 const apiUrl = process.env.API_URL;
 const apiPassword = process.env.CRAWL_PASSWORD;
 
-export async function postCrwalNotice({
+export async function postCrawlNotice({
   title,
   body,
   type,
@@ -34,7 +34,7 @@ export async function postCrwalNotice({
     });
 }
 
-export async function updateCrwalNotice({
+export async function updateCrawlNotice({
   title,
   body,
   type,
@@ -61,7 +61,7 @@ export async function updateCrwalNotice({
     });
 }
 
-export async function getCrwalNotice(url: string): Promise<Crawl | undefined> {
+export async function getCrawlNotice(url: string): Promise<Crawl | undefined> {
   return axios
     .get<Crawl>(`${apiUrl}/crawl`, {
       params: {

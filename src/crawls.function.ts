@@ -62,3 +62,12 @@ export function getAcademicNotice(link: string) {
     })
   );
 }
+
+getAcademicNotice(baseUrl).subscribe({
+  next: (value) => {
+    console.log("Academic Notice: ", value);
+  },
+  error: (err) => {
+    console.error("Error: ", err);
+  },
+});

@@ -9,9 +9,9 @@ import {
 } from "rxjs";
 import { getAcademicNotice, getAcademicNoticeList } from "./crawls.function";
 import {
-  getCrwalNotice,
-  postCrwalNotice,
-  updateCrwalNotice,
+  getCrawlNotice,
+  postCrawlNotice,
+  updateCrawlNotice,
 } from "./http.funtion";
 
 async function main() {
@@ -32,7 +32,7 @@ async function main() {
         getAcademicNotice(meta.link).pipe(map((notice) => ({ notice, meta })))
       ),
       map(async (notice) => {
-        const prev = await getCrwalNotice(notice.meta.link);
+        const prev = await getCrawlNotice(notice.meta.link);
         return { prev, notice };
       }),
       concatMap(identity),
@@ -50,7 +50,7 @@ async function main() {
   console.log("existing notices:", updateNotice.length);
   await Promise.all(
     newNotice.map(async ({ notice }) => {
-      await postCrwalNotice({
+      await postCrawlNotice({
         title: notice.meta.title,
         body: notice.notice.content ?? "",
         type: "ACADEMIC",
@@ -67,7 +67,7 @@ async function main() {
       if (prev?.title === notice.meta.title) {
         return;
       }
-      await updateCrwalNotice({
+      await updateCrawlNotice({
         title: notice.meta.title,
         body: notice.notice.content ?? "",
         type: "ACADEMIC",
